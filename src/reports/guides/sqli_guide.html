@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SQL Injection Remediation Guide</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+h1, h2 { border-bottom: 2px solid #333; padding-bottom: 6px; }
+.section { background: #fff; padding: 20px; margin: 20px 0; border-left: 5px solid #2980b9; }
+.bad { border-color: #c0392b; }
+.good { border-color: #27ae60; }
+code { background: #eee; padding: 2px 5px; }
+ul { margin-left: 20px; }
+</style>
+</head>
+<body>
+
+<h1>SQL Injection (SQLi) – Developer Remediation Guide</h1>
+
+<p>
+SQL Injection occurs when untrusted input is interpreted as part of a SQL query.
+This allows attackers to alter query logic, access unauthorized data, or execute
+database-level actions.
+</p>
+
+<h2>Why This Happens</h2>
+
+<div class="section bad">
+<p>
+Applications dynamically build SQL queries using user-controlled input without
+proper separation between data and query structure.
+</p>
+
+<p><strong>Common causes:</strong></p>
+<ul>
+<li>String concatenation in queries</li>
+<li>Improper input validation</li>
+<li>Over-privileged database accounts</li>
+<li>Assuming frontend validation is sufficient</li>
+</ul>
+</div>
+
+<h2>Insecure Logic Pattern</h2>
+
+<div class="section bad">
+<p>User input directly modifies SQL logic:</p>
+<code>SELECT * FROM users WHERE id = user_input</code>
+<p>
+An attacker can manipulate <code>user_input</code> to change the query behavior.
+</p>
+</div>
+
+<h2>Secure Logic Pattern</h2>
+
+<div class="section good">
+<p>Use parameterized queries or prepared statements:</p>
+<code>SELECT * FROM users WHERE id = ?</code>
+<p>
+The database engine treats user input strictly as data, not executable logic.
+</p>
+</div>
+
+<h2>Defense-in-Depth Measures</h2>
+
+<div class="section">
+<ul>
+<li><strong>Always use prepared statements</strong> for database access</li>
+<li>Use ORM frameworks correctly (avoid raw queries unless necessary)</li>
+<li>Apply strict input validation and type enforcement</li>
+<li>Limit database account privileges (no admin access for web apps)</li>
+<li>Log and monitor failed queries and anomalies</li>
+</ul>
+</div>
+
+<h2>What NOT to Rely On</h2>
+
+<div class="section bad">
+<ul>
+<li>Escaping input manually</li>
+<li>Blacklist-based filtering</li>
+<li>Frontend-only validation</li>
+<li>Security through obscurity</li>
+</ul>
+</div>
+
+<h2>Verification Checklist</h2>
+
+<div class="section">
+<ul>
+<li>All database queries are parameterized</li>
+<li>No user input reaches SQL syntax positions</li>
+<li>Error messages do not reveal query structure</li>
+<li>Database permissions follow least privilege</li>
+</ul>
+</div>
+
+<p>
+Fixing SQL Injection correctly eliminates entire classes of attacks.
+If you fix it halfway, attackers will find the half you missed.
+</p>
+
+</body>
+</html>

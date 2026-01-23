@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XSS Remediation Guide</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+h1, h2 { border-bottom: 2px solid #333; padding-bottom: 6px; }
+.section { background: #fff; padding: 20px; margin: 20px 0; border-left: 5px solid #2980b9; }
+.bad { border-color: #c0392b; }
+.good { border-color: #27ae60; }
+code { background: #eee; padding: 2px 5px; }
+ul { margin-left: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Cross-Site Scripting (XSS) – Developer Remediation Guide</h1>
+
+<p>
+Cross-Site Scripting occurs when untrusted input is rendered in a browser without
+appropriate output encoding, allowing attackers to execute scripts in a user's
+context.
+</p>
+
+<h2>Why This Happens</h2>
+
+<div class="section bad">
+<ul>
+<li>Rendering raw user input into HTML</li>
+<li>Incorrect output encoding</li>
+<li>Misunderstanding HTML, JS, and attribute contexts</li>
+<li>Over-trusting frontend frameworks</li>
+</ul>
+</div>
+
+<h2>Insecure Logic Pattern</h2>
+
+<div class="section bad">
+<p>Unescaped user input rendered into HTML:</p>
+<code>&lt;div&gt;Welcome user_input&lt;/div&gt;</code>
+</div>
+
+<h2>Secure Logic Pattern</h2>
+
+<div class="section good">
+<p>Encode output based on rendering context:</p>
+<code>&lt;div&gt;Welcome escaped_user_input&lt;/div&gt;</code>
+<p>
+Escaping must match the output context (HTML, attribute, JS, URL).
+</p>
+</div>
+
+<h2>XSS Contexts You Must Understand</h2>
+
+<div class="section">
+<ul>
+<li><strong>HTML body context</strong></li>
+<li><strong>HTML attribute context</strong></li>
+<li><strong>JavaScript context</strong></li>
+<li><strong>URL context</strong></li>
+</ul>
+<p>
+Each context requires different escaping rules.
+</p>
+</div>
+
+<h2>Defense-in-Depth Measures</h2>
+
+<div class="section">
+<ul>
+<li>Use templating engines with automatic escaping</li>
+<li>Apply strict Content Security Policy (CSP)</li>
+<li>Avoid inline JavaScript where possible</li>
+<li>Sanitize rich text input with well-maintained libraries</li>
+<li>Use HTTPOnly and Secure flags on cookies</li>
+</ul>
+</div>
+
+<h2>What NOT to Rely On</h2>
+
+<div class="section bad">
+<ul>
+<li>Input filtering alone</li>
+<li>Regex-based sanitization</li>
+<li>Client-side validation</li>
+<li>Manual escaping logic</li>
+</ul>
+</div>
+
+<h2>Verification Checklist</h2>
+
+<div class="section">
+<ul>
+<li>All user input is escaped on output</li>
+<li>Escaping matches rendering context</li>
+<li>No inline script injection paths exist</li>
+<li>CSP blocks inline script execution</li>
+</ul>
+</div>
+
+<p>
+XSS fixes are fragile if applied inconsistently.
+Treat output encoding as a default behavior, not an exception.
+</p>
+
+</body>
+</html>
